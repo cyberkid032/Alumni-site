@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — KBHSAA</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="brand">KBHSAA · Admin</a>
+    <ul>
+      <li><a href="index.html">View site</a></li>
+      <li><a href="#" onclick="logout()">Log out</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Login gate -->
+<section class="section" id="login-section">
+  <div class="container">
+    <h1>Admin login</h1>
+    <form id="login-form" onsubmit="handleLogin(event)">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+      <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Log in</button>
+      <p id="login-status" class="form-status"></p>
+    </form>
+  </div>
+</section>
+
+<!-- Dashboard (hidden until logged in) -->
+<section class="section" id="dashboard-section" style="display:none;">
+  <div class="container">
+    <h1>Dashboard</h1>
+
+    <h2>Pending member approvals</h2>
+    <table class="admin-table">
+      <thead>
+        <tr><th>Name</th><th>Grad year</th><th>Email</th><th>Status</th><th>Action</th></tr>
+      </thead>
+      <tbody id="pending-table-body">
+        <tr><td colspan="5">Loading...</td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="margin-top: 48px;">Approved members</h2>
+    <p class="meta">Feature one member on the homepage as the Alumni Spotlight. Toggle dues for the current year.</p>
+    <p id="dues-stats" class="meta"></p>
+    <table class="admin-table">
+      <thead>
+        <tr><th>Name</th><th>Grad year</th><th>Email</th><th>Status</th><th>Spotlight</th><th>Dues ${new Date().getFullYear()}</th></tr>
+      </thead>
+      <tbody id="approved-table-body">
+        <tr><td colspan="6">Loading...</td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="margin-top: 48px;">Post an announcement</h2>
+    <form id="announcement-form" onsubmit="postAnnouncement(event)">
+      <label for="a-title">Title</label>
+      <input type="text" id="a-title" required>
+      <label for="a-body">Body</label>
+      <textarea id="a-body" rows="4" required></textarea>
+      <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Post announcement</button>
+      <p id="announcement-status" class="form-status"></p>
+    </form>
+
+    <h3 style="margin-top: 32px;">Existing announcements</h3>
+    <table class="admin-table">
+      <thead>
+        <tr><th>Title</th><th>Posted</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="announcements-table-body">
+        <tr><td colspan="3">Loading...</td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="margin-top: 48px;">Add an event</h2>
+    <form id="event-form" onsubmit="postEvent(event)">
+      <label for="e-title">Title</label>
+      <input type="text" id="e-title" required>
+      <label for="e-date">Date</label>
+      <input type="datetime-local" id="e-date" required>
+      <label for="e-location">Location</label>
+      <input type="text" id="e-location">
+      <label for="e-description">Description</label>
+      <textarea id="e-description" rows="3"></textarea>
+      <label for="e-ticket-price">Ticket price (optional — leave blank for free RSVP)</label>
+      <input type="number" id="e-ticket-price" min="0" step="1" placeholder="e.g. 1000">
+      <label for="e-currency">Currency</label>
+      <input type="text" id="e-currency" value="KES" maxlength="3">
+      <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Add event</button>
+      <p id="event-status" class="form-status"></p>
+    </form>
+
+    <h3 style="margin-top: 32px;">Existing events</h3>
+    <table class="admin-table">
+      <thead>
+        <tr><th>Title</th><th>Date</th><th>Location</th><th>RSVPs</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="events-table-body">
+        <tr><td colspan="5">Loading...</td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="margin-top: 48px;">Add a photo</h2>
+    <p class="meta">Paste a hosted image link (e.g. upload to Supabase Storage, Imgur, or Google Drive and share the direct link).</p>
+    <form id="photo-form" onsubmit="postPhoto(event)">
+      <label for="p-title">Caption (optional)</label>
+      <input type="text" id="p-title">
+      <label for="p-url">Image URL</label>
+      <input type="url" id="p-url" placeholder="https://..." required>
+      <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Add photo</button>
+      <p id="photo-status" class="form-status"></p>
+    </form>
+
+    <h3 style="margin-top: 32px;">Existing photos</h3>
+    <div class="grid" id="photos-admin-grid">
+      <p>Loading...</p>
+    </div>
+
+    <h2 style="margin-top: 48px;">Newsletter subscribers</h2>
+    <p id="newsletter-count" class="meta">Loading...</p>
+    <button class="btn btn-outline" onclick="copySubscriberEmails()">Copy all emails</button>
+
+    <h2 style="margin-top: 48px;">Job & internship postings</h2>
+    <h3>Pending approval</h3>
+    <table class="admin-table">
+      <thead><tr><th>Title</th><th>Posted by</th><th>Contact</th><th>Action</th></tr></thead>
+      <tbody id="jobs-pending-body"><tr><td colspan="4">Loading...</td></tr></tbody>
+    </table>
+    <h3 style="margin-top: 24px;">Approved listings</h3>
+    <table class="admin-table">
+      <thead><tr><th>Title</th><th>Posted by</th><th>Contact</th><th>Actions</th></tr></thead>
+      <tbody id="jobs-approved-body"><tr><td colspan="4">Loading...</td></tr></tbody>
+    </table>
+
+    <h2 style="margin-top: 48px;">Mentorship sign-ups</h2>
+    <h3>Pending approval</h3>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Role</th><th>Area</th><th>Action</th></tr></thead>
+      <tbody id="mentorship-pending-body"><tr><td colspan="4">Loading...</td></tr></tbody>
+    </table>
+    <h3 style="margin-top: 24px;">Approved profiles</h3>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Role</th><th>Area</th><th>Actions</th></tr></thead>
+      <tbody id="mentorship-approved-body"><tr><td colspan="4">Loading...</td></tr></tbody>
+    </table>
+
+    <h2 style="margin-top: 48px;">Class notes moderation</h2>
+    <table class="admin-table">
+      <thead><tr><th>Year</th><th>Author</th><th>Message</th><th>Action</th></tr></thead>
+      <tbody id="class-notes-admin-body"><tr><td colspan="4">Loading...</td></tr></tbody>
+    </table>
+
+    <h2 style="margin-top: 48px;">Donations</h2>
+    <p id="donations-total" class="meta">Loading...</p>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Amount</th><th>Message</th><th>Date</th></tr></thead>
+      <tbody id="donations-table-body"><tr><td colspan="4">Loading...</td></tr></tbody>
+    </table>
+
+    <h2 style="margin-top: 48px;">Memorial tributes</h2>
+    <h3>Pending approval</h3>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Submitted by</th><th>Action</th></tr></thead>
+      <tbody id="memorials-pending-body"><tr><td colspan="3">Loading...</td></tr></tbody>
+    </table>
+    <h3 style="margin-top: 24px;">Published tributes</h3>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Years</th><th>Actions</th></tr></thead>
+      <tbody id="memorials-approved-body"><tr><td colspan="3">Loading...</td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Edit announcement modal -->
+<div id="edit-announcement-modal" class="modal" style="display:none;">
+  <div class="modal-box">
+    <h3>Edit announcement</h3>
+    <form id="edit-announcement-form" onsubmit="saveAnnouncementEdit(event)">
+      <input type="hidden" id="edit-a-id">
+      <label for="edit-a-title">Title</label>
+      <input type="text" id="edit-a-title" required>
+      <label for="edit-a-body">Body</label>
+      <textarea id="edit-a-body" rows="4" required></textarea>
+      <div style="margin-top: 20px; display:flex; gap: 12px;">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-outline" onclick="closeModal('edit-announcement-modal')">Cancel</button>
+      </div>
+      <p id="edit-announcement-status" class="form-status"></p>
+    </form>
+  </div>
+</div>
+
+<!-- Edit event modal -->
+<div id="edit-event-modal" class="modal" style="display:none;">
+  <div class="modal-box">
+    <h3>Edit event</h3>
+    <form id="edit-event-form" onsubmit="saveEventEdit(event)">
+      <input type="hidden" id="edit-e-id">
+      <label for="edit-e-title">Title</label>
+      <input type="text" id="edit-e-title" required>
+      <label for="edit-e-date">Date</label>
+      <input type="datetime-local" id="edit-e-date" required>
+      <label for="edit-e-location">Location</label>
+      <input type="text" id="edit-e-location">
+      <label for="edit-e-description">Description</label>
+      <textarea id="edit-e-description" rows="3"></textarea>
+      <label for="edit-e-ticket-price">Ticket price (optional)</label>
+      <input type="number" id="edit-e-ticket-price" min="0" step="1">
+      <label for="edit-e-currency">Currency</label>
+      <input type="text" id="edit-e-currency" maxlength="3">
+      <div style="margin-top: 20px; display:flex; gap: 12px;">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-outline" onclick="closeModal('edit-event-modal')">Cancel</button>
+      </div>
+      <p id="edit-event-status" class="form-status"></p>
+    </form>
+  </div>
+</div>
+
+<!-- Spotlight blurb modal -->
+<div id="spotlight-modal" class="modal" style="display:none;">
+  <div class="modal-box">
+    <h3>Feature this alumnus</h3>
+    <form id="spotlight-form" onsubmit="saveSpotlight(event)">
+      <input type="hidden" id="spotlight-member-id">
+      <label for="spotlight-blurb">Short blurb (shown on the homepage)</label>
+      <textarea id="spotlight-blurb" rows="4" placeholder="e.g. what they're doing now, an achievement, advice for current students"></textarea>
+      <div style="margin-top: 20px; display:flex; gap: 12px;">
+        <button type="submit" class="btn btn-primary">Save & feature</button>
+        <button type="button" class="btn btn-outline" onclick="closeModal('spotlight-modal')">Cancel</button>
+      </div>
+      <p id="spotlight-status" class="form-status"></p>
+    </form>
+  </div>
+</div>
+
+<!-- RSVP / ticket list modal -->
+<div id="rsvp-list-modal" class="modal" style="display:none;">
+  <div class="modal-box">
+    <h3 id="rsvp-list-heading">Attendees</h3>
+    <p id="rsvp-list-event-title" class="meta"></p>
+    <table class="admin-table">
+      <thead id="rsvp-list-thead"><tr><th>Name</th><th>Email</th></tr></thead>
+      <tbody id="rsvp-list-body"><tr><td colspan="2">Loading...</td></tr></tbody>
+    </table>
+    <button class="btn btn-outline" style="margin-top: 20px;" onclick="closeModal('rsvp-list-modal')">Close</button>
+  </div>
+</div>
+
+<!-- Edit photo modal -->
+<div id="edit-photo-modal" class="modal" style="display:none;">
+  <div class="modal-box">
+    <h3>Edit photo</h3>
+    <form id="edit-photo-form" onsubmit="savePhotoEdit(event)">
+      <input type="hidden" id="edit-p-id">
+      <label for="edit-p-title">Caption</label>
+      <input type="text" id="edit-p-title">
+      <label for="edit-p-url">Image URL</label>
+      <input type="url" id="edit-p-url" required>
+      <div style="margin-top: 20px; display:flex; gap: 12px;">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-outline" onclick="closeModal('edit-photo-modal')">Cancel</button>
+      </div>
+      <p id="edit-photo-status" class="form-status"></p>
+    </form>
+  </div>
+</div>
+
+<!-- Edit job posting modal -->
+<div id="edit-job-modal" class="modal" style="display:none;">
+  <div class="modal-box">
+    <h3>Edit job posting</h3>
+    <form id="edit-job-form" onsubmit="saveJobEdit(event)">
+      <input type="hidden" id="edit-j-id">
+      <label for="edit-j-title">Role title</label>
+      <input type="text" id="edit-j-title" required>
+      <label for="edit-j-company">Company</label>
+      <input type="text" id="edit-j-company">
+      <label for="edit-j-description">Description</label>
+      <textarea id="edit-j-description" rows="4"></textarea>
+      <label for="edit-j-email">Contact email</label>
+      <input type="email" id="edit-j-email" required>
+      <div style="margin-top: 20px; display:flex; gap: 12px;">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-outline" onclick="closeModal('edit-job-modal')">Cancel</button>
+      </div>
+      <p id="edit-job-status" class="form-status"></p>
+    </form>
+  </div>
+</div>
+
+<!-- Edit mentorship profile modal -->
+<div id="edit-mentorship-modal" class="modal" style="display:none;">
+  <div class="modal-box">
+    <h3>Edit mentorship profile</h3>
+    <form id="edit-mentorship-form" onsubmit="saveMentorshipEdit(event)">
+      <input type="hidden" id="edit-m-id">
+      <label for="edit-m-area">Area / field</label>
+      <input type="text" id="edit-m-area">
+      <label for="edit-m-bio">Bio</label>
+      <textarea id="edit-m-bio" rows="4"></textarea>
+      <div style="margin-top: 20px; display:flex; gap: 12px;">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-outline" onclick="closeModal('edit-mentorship-modal')">Cancel</button>
+      </div>
+      <p id="edit-mentorship-status" class="form-status"></p>
+    </form>
+  </div>
+</div>
+
+<!-- Edit memorial modal -->
+<div id="edit-memorial-modal" class="modal" style="display:none;">
+  <div class="modal-box">
+    <h3>Edit tribute</h3>
+    <form id="edit-memorial-form" onsubmit="saveMemorialEdit(event)">
+      <input type="hidden" id="edit-mem-id">
+      <label for="edit-mem-name">Full name</label>
+      <input type="text" id="edit-mem-name" required>
+      <label for="edit-mem-grad-year">Graduation year</label>
+      <input type="number" id="edit-mem-grad-year">
+      <label for="edit-mem-passing">Date of passing</label>
+      <input type="date" id="edit-mem-passing">
+      <label for="edit-mem-tribute">Tribute</label>
+      <textarea id="edit-mem-tribute" rows="4"></textarea>
+      <label for="edit-mem-photo">Photo URL</label>
+      <input type="url" id="edit-mem-photo">
+      <div style="margin-top: 20px; display:flex; gap: 12px;">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-outline" onclick="closeModal('edit-memorial-modal')">Cancel</button>
+      </div>
+      <p id="edit-memorial-status" class="form-status"></p>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

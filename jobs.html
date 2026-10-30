@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jobs & Internships — KBHSAA</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="brand">KBHSAA</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="directory.html">Directory</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="jobs.html">Jobs</a></li>
+      <li><a href="mentorship.html">Mentorship</a></li>
+      <li><a href="class-notes.html">Class Notes</a></li>
+      <li><a href="donate.html">Donate</a></li>
+      <li><a href="memorial.html">Memorial</a></li>
+      <li><a href="register.html">Join</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <h1>Jobs & internships</h1>
+    <p class="lead">Opportunities shared by fellow alumni. Hiring? Post a role below — it goes live after a quick admin check.</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+    <div class="grid" id="jobs-grid">
+      <p>Loading...</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Post a job or internship</h2>
+    <form id="job-form" onsubmit="submitJobPosting(event)">
+      <label for="j-title">Role title</label>
+      <input type="text" id="j-title" required>
+      <label for="j-company">Company (optional)</label>
+      <input type="text" id="j-company">
+      <label for="j-description">Description</label>
+      <textarea id="j-description" rows="4"></textarea>
+      <label for="j-email">Contact email for applicants</label>
+      <input type="email" id="j-email" required>
+      <label for="j-posted-by">Your name</label>
+      <input type="text" id="j-posted-by" required>
+      <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Submit for review</button>
+      <p id="job-status" class="form-status"></p>
+    </form>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; <span id="year"></span> Kyuso Boys High School Alumni Association (KBHSAA). <a href="contact.html">Get in touch</a></p>
+    <p class="credit">Developed by Harttech</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/main.js"></script>
+<script src="js/site.js"></script>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Register — KBHSAA</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="brand">KBHSAA</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="directory.html">Directory</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="jobs.html">Jobs</a></li>
+      <li><a href="mentorship.html">Mentorship</a></li>
+      <li><a href="class-notes.html">Class Notes</a></li>
+      <li><a href="donate.html">Donate</a></li>
+      <li><a href="memorial.html">Memorial</a></li>
+      <li><a href="register.html">Join</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <h1>Register as an alumnus</h1>
+    <p class="lead">Takes a minute. Your listing goes live once an admin approves it.</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+    <form id="register-form" onsubmit="handleRegister(event)">
+      <label for="full_name">Full name</label>
+      <input type="text" id="full_name" name="full_name" required>
+
+      <label for="grad_year">Graduation year</label>
+      <input type="number" id="grad_year" name="grad_year" min="1950" max="2026" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="phone">Phone (optional)</label>
+      <input type="tel" id="phone" name="phone">
+
+      <label for="location">Current location (optional)</label>
+      <input type="text" id="location" name="location">
+
+      <label for="profession">Profession (optional)</label>
+      <input type="text" id="profession" name="profession">
+
+      <label for="skills">Skills (optional, comma-separated)</label>
+      <input type="text" id="skills" name="skills" placeholder="e.g. Law, Public Speaking, Accounting">
+
+      <label for="bio">Short bio (optional)</label>
+      <textarea id="bio" name="bio" rows="4"></textarea>
+
+      <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Submit registration</button>
+      <p id="form-status" class="form-status"></p>
+    </form>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; <span id="year"></span> Kyuso Boys High School Alumni Association (KBHSAA). <a href="contact.html">Get in touch</a></p>
+    <p class="credit">Developed by Harttech</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/main.js"></script>
+<script src="js/site.js"></script>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

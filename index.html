@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kyuso Boys High School Alumni Association (KBHSAA)</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="brand">KBHSAA</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="directory.html">Directory</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="jobs.html">Jobs</a></li>
+      <li><a href="mentorship.html">Mentorship</a></li>
+      <li><a href="class-notes.html">Class Notes</a></li>
+      <li><a href="donate.html">Donate</a></li>
+      <li><a href="memorial.html">Memorial</a></li>
+      <li><a href="register.html">Join</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <h1>Welcome back, alumni.</h1>
+    <p class="lead">Reconnect with classmates, hear the latest from school, and stay part of a community that shaped us.</p>
+    <div class="hero-actions">
+      <a href="register.html" class="btn btn-primary">Register as an alumnus</a>
+      <a href="directory.html" class="btn btn-outline">Browse the directory</a>
+    </div>
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat"><span class="stat-number">—</span><span class="stat-label">Loading...</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="section reveal" id="spotlight-section" style="display:none;">
+  <div class="container">
+    <h2>Alumni spotlight</h2>
+    <div id="spotlight-card"></div>
+  </div>
+</section>
+
+<section class="section reveal">
+  <div class="container">
+    <h2>Latest news</h2>
+    <div class="grid" id="news-grid">
+      <p>Loading...</p>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal">
+  <div class="container">
+    <h2>Upcoming events</h2>
+    <div class="grid" id="events-grid">
+      <p>Loading...</p>
+    </div>
+    <p style="margin-top: 20px;"><a href="events.html" class="btn btn-outline">See all events</a></p>
+  </div>
+</section>
+
+<section class="section reveal newsletter-section">
+  <div class="container">
+    <h2>Stay in the loop</h2>
+    <p>Get news and event announcements by email — no spam, unsubscribe anytime.</p>
+    <form id="newsletter-form" class="newsletter-form" onsubmit="handleNewsletterSignup(event)">
+      <input type="email" id="newsletter-email" placeholder="you@example.com" required>
+      <button type="submit" class="btn btn-primary">Subscribe</button>
+    </form>
+    <p id="newsletter-status" class="form-status"></p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; <span id="year"></span> Kyuso Boys High School Alumni Association (KBHSAA). <a href="contact.html">Get in touch</a></p>
+    <p class="credit">Developed by Harttech</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/main.js"></script>
+<script src="js/site.js"></script>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

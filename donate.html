@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Donate — KBHSAA</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="brand">KBHSAA</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="directory.html">Directory</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="jobs.html">Jobs</a></li>
+      <li><a href="mentorship.html">Mentorship</a></li>
+      <li><a href="class-notes.html">Class Notes</a></li>
+      <li><a href="donate.html">Donate</a></li>
+      <li><a href="memorial.html">Memorial</a></li>
+      <li><a href="register.html">Join</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <h1>Support KBHSAA</h1>
+    <p class="lead">Your gift funds scholarships, infrastructure, and school development projects at Kyuso Boys High School.</p>
+    <div class="stats-bar" style="grid-template-columns: 1fr;">
+      <div class="stat">
+        <span class="stat-number" id="donations-total-display">—</span>
+        <span class="stat-label">Raised so far</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+    <h2>Make a donation</h2>
+    <form id="donation-form" onsubmit="submitDonation(event)">
+      <label>Amount (KES)</label>
+      <div class="amount-buttons" id="amount-buttons">
+        <button type="button" class="amount-btn" data-amount="500">500</button>
+        <button type="button" class="amount-btn" data-amount="1000">1,000</button>
+        <button type="button" class="amount-btn" data-amount="5000">5,000</button>
+        <button type="button" class="amount-btn" data-amount="10000">10,000</button>
+      </div>
+      <label for="d-amount">Or enter a custom amount</label>
+      <input type="number" id="d-amount" min="50" step="1" required>
+
+      <label for="d-name">Full name</label>
+      <input type="text" id="d-name" required>
+      <label for="d-email">Email</label>
+      <input type="email" id="d-email" required>
+      <label for="d-message">Message (optional)</label>
+      <textarea id="d-message" rows="3"></textarea>
+
+      <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Donate now</button>
+      <p id="donation-status" class="form-status"></p>
+    </form>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Recent supporters</h2>
+    <div id="donation-wall">
+      <p>Loading...</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; <span id="year"></span> Kyuso Boys High School Alumni Association (KBHSAA). <a href="contact.html">Get in touch</a></p>
+    <p class="credit">Developed by Harttech</p>
+  </div>
+</footer>
+
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/payment-config.js"></script>
+<script src="js/payments.js"></script>
+<script src="js/main.js"></script>
+<script src="js/site.js"></script>
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+document.querySelectorAll(".amount-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.getElementById("d-amount").value = btn.dataset.amount;
+    document.querySelectorAll(".amount-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});
+</script>
+</body>
+</html>
